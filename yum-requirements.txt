@@ -1,0 +1,3 @@
+libffi-devel
+openssl-devel
+xmlsec1-devel

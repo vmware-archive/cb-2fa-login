@@ -1,0 +1,43 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block styles %}
+{{super()}}
+<style>
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+{{ utils.flashed_messages() }}
+    <h1>User List</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Email</th>
+            <th>Cb username</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+            <tr>
+                                <td>
+                    <a href="{{url_for('admin.edit_user', id=user.id)}}"
+                       role="button" type="button" class="btn btn-xs btn-primary">Edit</a>
+                </td>
+
+                <td>{{ user.email }}</td><td>{{ user.cb_username }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="button" class="btn">Add new user</button>
+</div>
+{% endblock %}

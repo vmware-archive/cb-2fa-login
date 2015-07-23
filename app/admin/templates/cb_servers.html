@@ -1,0 +1,41 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block styles %}
+{{super()}}
+<style>
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+{{ utils.flashed_messages() }}
+    <h1>User List</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Description</th>
+            <th>DNS name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for server in servers %}
+            <tr>
+                <td>{{ server.description }}</td><td>{{ server.url }}</td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-xs">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="button" class="btn">Add new Cb server</button>
+</div>
+{% endblock %}

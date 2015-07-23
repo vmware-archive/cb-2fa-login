@@ -1,0 +1,20 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block styles %}
+{{super()}}
+<style>
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+{{ utils.flashed_messages() }}
+    <h1>Hello, {{user}}</h1>
+</div>
+{% endblock %}

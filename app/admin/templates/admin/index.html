@@ -1,0 +1,23 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block styles %}
+{{super()}}
+<style>
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+{{ utils.flashed_messages() }}
+    <h1>Administration Interface</h1>
+        <a href="{{url_for('admin.cb_servers')}}">Cb servers</a>
+        <a href="{{url_for('admin.users')}}">Users</a>
+        <a href="{{url_for('idp.saml_metadata')}}">SAML IdP metadata</a>
+</div>
+{% endblock %}

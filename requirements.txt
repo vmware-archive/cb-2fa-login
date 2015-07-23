@@ -1,0 +1,17 @@
+-e git+https://github.com/rohe/pysaml2.git#egg=pysaml2
+flask-wtf
+requests
+python-dateutil
+argparse
+flask
+jinja2
+pillow
+uwsgi
+bcrypt
+flask-bootstrap
+qrcode
+flask-login
+flask-sqlalchemy
+flask-security
+bcrypt
+-e git+https://github.com/mrjoes/flask-admin.git#egg=flask-admin

@@ -1,0 +1,23 @@
+<head>
+<title>SAML 2.0 post</title>
+<style>
+    #postback_form {
+      display: none;
+    }
+</style>
+
+</head>
+<body>
+
+<form id="postback_form" method="post" action="{{location}}">
+   <input type="hidden" name="{{saml_key}}" value="{{saml_message}}" />
+   <input type="hidden" name="RelayState" value="{{relay_state}}" />
+   <input type="submit" value="Submit" />
+</form>
+
+<script type="text/javascript">
+     window.onload = function ()
+ { document.forms[0].submit(); }
+</script>
+</body>
+

@@ -1,0 +1,30 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/utils.html" as utils %}
+
+{% block styles %}
+{{super()}}
+<style>
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<script src='/static/js/Duo-Web-v1.bundled.min.js'></script>
+                <script>
+                  Duo.init({'host':'{{host}}', 'sig_request':'{{sig_request}}'});
+                </script>
+                <style>
+                  body {text-align: center;}
+                  iframe {width: 100%%; min-width: 304px; max-width: 620px; height: 330px;}
+                </style>
+                <div class="container">
+{{ utils.flashed_messages() }}
+                    <h1>Second factor login with Duo</h1>
+                <iframe id='duo_iframe' frameborder='0'></iframe>
+            </div>
+{% endblock %}
+                
