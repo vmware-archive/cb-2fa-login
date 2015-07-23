@@ -12,6 +12,4 @@ flask-bootstrap
 qrcode
 flask-login
 flask-sqlalchemy
-flask-security
-bcrypt
 -e git+https://github.com/mrjoes/flask-admin.git#egg=flask-admin
