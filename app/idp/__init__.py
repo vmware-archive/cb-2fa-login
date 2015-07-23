@@ -7,7 +7,7 @@ idp_component = Blueprint('idp', __name__, template_folder='templates')
 from hashlib import sha1
 from forms import LoginForm
 from lib import duo_web
-from flask.ext.security import login_required, logout_user, current_user
+from flask.ext.login import login_required, logout_user, current_user
 from flask import current_app
 from saml2 import server, config, sigver, SAMLError
 from saml2.mdstore import InMemoryMetaData
@@ -114,10 +114,8 @@ def index():
     return render_template('index.html', title="Home", user=current_user.email)
 
 @idp_component.route('/sso', methods=['GET', 'POST'])
+@login_required
 def saml_idp_endpoint():
-    if 'saml_key' in session and session['saml_key'] in IDP.ticket:
-        return handle_saml_request()
-
     if 'SAMLRequest' not in request.values:
         return redirect(url_for('.index'))
 
@@ -126,12 +124,11 @@ def saml_idp_endpoint():
                        'RelayState': request.values.get('RelayState')}
 
     session['saml_key'] = key
+    return handle_saml_request()
 
     # FIXME: this is here for now to ensure that our metadata is properly stored in the metadata cache
     # once we have validated that, then this can be removed... but we *should* validate that the request
     # comes from a valid SAML SP before completing the login process......
-
-    return redirect(url_for('.twofactor', next=url_for('.saml_idp_endpoint')))
 
 def handle_saml_request():
     print 'in handle_saml_request'
@@ -202,6 +199,10 @@ def set_preauth(user):
 
 @idp_component.route('/2fa/validate', methods=['GET', 'POST'])
 def twofactor():
+    if current_user.is_authenticated():
+        print 'validated'
+        return redirect(get_redirect_target())
+
     user_preauth = session.get('preauth', None)
     try:
         print 'user_preauth = %s' % user_preauth
@@ -266,6 +267,7 @@ def twofactor():
 
             return render_template("duo_login.html", host=duo_config.host, sig_request=sig_request)
     else:
+        print "don't need duo login"
         clear_preauth()
         login_user(u)
         return redirect(get_redirect_target())
