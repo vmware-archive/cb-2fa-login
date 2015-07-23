@@ -96,4 +96,26 @@ Restart cb-coreservices:
 
 `service cb-coreservices restart`
 
-You should now see a link to log in via your new SAML IdP on the logon page!
+You should now see a link to log in via your new SAML IdP on the logon page! You're almost there... One last step.
+
+### Adding Your First Carbon Black Server to the IdP
+
+Execute this on your Cb server: `/usr/share/cb/cbssl sso --make-metadata > /tmp/metadata.xml`. Log into your IdP and
+enter the admin interface (add `/admin` to the URL). Click on "Cb Server" at the top of the admin interface and click
+"Create". Fill in the fields, including the Cb server's API key. Copy the contents of
+that `/tmp/metadata.xml` file into the SAML SP config textbox and click "Submit".
+
+Now you should be able to complete the login process by clicking the SAML link on the logon page!
+
+## Debugging
+
+You will undoubtedly run into problems. Here's some common troubleshooting steps:
+
+### "Unhandled Exception. Check log for details" when attempting to log in Cb via SAML.
+
+Check the logs in `/var/log/cb/coreservices/debug.log`. Here are some common errors:
+
+* `Unhandled exception from API request: Config does not contain any IdPs`
+
+  Ensure the EntityId in the "idp" section matches the URL to the idp.xml file on your IdP. You can validate this
+  by looking at the entityId attribute of the ns0:EntityDescriptor tag on the idp.xml file.
