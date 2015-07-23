@@ -31,7 +31,6 @@ def generate_config():
         config[section] = ConfigStruct(dict(zip(config_parser.options(section),
                 [config_parser.get(section, y) for y in config_parser.options(section)])))
 
-    print config
     return config
 
 app.config.update(generate_config())
@@ -58,7 +57,6 @@ admin = setup_admin(app, db)
 @app.before_first_request
 def initialize_self():
     load_all_metadata()
-    print 'done initializing'
 
 # Create a user to test with
 def create_base_data(u):
