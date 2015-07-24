@@ -3,4 +3,6 @@ openssl-devel
 xmlsec1-devel
 git
 gcc
+epel-release
+python-pip
 python-devel
