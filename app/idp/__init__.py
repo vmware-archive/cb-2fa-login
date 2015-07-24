@@ -106,6 +106,10 @@ def need_duo_login():
         except:
             session.pop('duo_expiry')
 
+    duo_config = current_app.config['duo']
+    if duo_config.enabled == 'false':
+        return False
+
     return True
 
 @idp_component.route('/')
@@ -200,14 +204,11 @@ def set_preauth(user):
 @idp_component.route('/2fa/validate', methods=['GET', 'POST'])
 def twofactor():
     if current_user.is_authenticated():
-        print 'validated'
         return redirect(get_redirect_target())
 
     user_preauth = session.get('preauth', None)
     try:
-        print 'user_preauth = %s' % user_preauth
         u = User.query.get(int(user_preauth))
-        print '<user:', u.email, '>'
         if not u: # or not u.active:
             clear_preauth()
             flash("Invalid login", "danger")
@@ -223,12 +224,9 @@ def twofactor():
         duo_config = current_app.config['duo']
         if request.method == 'POST':
             # validate response
-            print 'in duo POST'
             try:
                 sig_response = request.form["sig_response"]
-                print 'sig_response', sig_response
                 user = duo_web.verify_response(duo_config.ikey, duo_config.skey, duo_config.akey, sig_response)
-                print 'user is %s' % user
                 if user is None:
                     user = duo_web.verify_enroll_response(duo_config.ikey, duo_config.skey, duo_config.akey, sig_response)
                     if user is None:
@@ -249,7 +247,6 @@ def twofactor():
                 return redirect("/")
 
             duo_expiry = (datetime.now() + timedelta(minutes=10)).isoformat()
-            print duo_expiry
             session['duo_expiry'] = duo_expiry
 
             clear_preauth()
@@ -257,17 +254,12 @@ def twofactor():
 
             return redirect(get_redirect_target())
         else:
-            print 'user_email is', u.email
             sig_request = duo_web.sign_request(
                         duo_config.ikey, duo_config.skey, duo_config.akey,
                         u.email)
 
-            print 'sig_request is', sig_request
-            print 'duo_config_host is', duo_config.host
-
             return render_template("duo_login.html", host=duo_config.host, sig_request=sig_request)
     else:
-        print "don't need duo login"
         clear_preauth()
         login_user(u)
         return redirect(get_redirect_target())
