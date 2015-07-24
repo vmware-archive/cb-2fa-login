@@ -45,16 +45,18 @@ def initialize_database():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run IdP server")
+    parser = argparse.ArgumentParser(description="IdP development HTTP server and administration interface.")
     parser.add_argument('--init', action='store_true', dest='initialize',
                         help='Initialize the datastore. WARNING: this will delete ALL existing data', default=False)
     parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Enable verbose debugging messages', default=False)
+                        help='Enable verbose debugging messages & debugging. WARNING: this will give FULL ACCESS to your server through an open console for any errors', default=False)
+    parser.add_argument('-p', '--port', action='store', type=int, dest='port_number',
+                        help='Port number for IdP development server', default=7890)
 
     options = parser.parse_args()
 
     if options.initialize:
-        sys.stderr.write('WARNING: this will delete ALL existing data! Type "yes" to continue\n')
+        sys.stderr.write('WARNING: this will delete ALL existing data!\n The user database and list of attached Carbon Black servers will be erased with this option.\n Type "yes" to continue and erase existing data or anything else to exit.\n')
         response = sys.stdin.readline()
         if response.strip() == 'yes':
             sys.stderr.write('Recreating database\n')
@@ -63,7 +65,7 @@ def main():
             sys.stderr.write('Database left untouched.\n')
         return 0
 
-    app.app.run(host='0.0.0.0', debug=options.verbose)
+    app.app.run(host='0.0.0.0', port=options.port_number, debug=options.verbose)
 
 if __name__ == '__main__':
     sys.exit(main())
