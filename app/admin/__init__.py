@@ -4,12 +4,11 @@ from flask_admin import Admin, BaseView, expose
 from flask.ext import admin
 from flask_admin.contrib import sqla
 from flask import abort, redirect, url_for, request, flash
-from flask_security import current_user
+from flask.ext.login import current_user
 from app.models import User, CbServer
 
 from wtforms.fields import PasswordField, BooleanField
 from wtforms import Form, validators
-from flask_security.utils import encrypt_password
 
 from cbapi import CbApi
 
