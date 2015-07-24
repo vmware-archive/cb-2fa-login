@@ -57,8 +57,8 @@ class UserModelView(MyModelView):
     form_columns = ('email', 'cb_username', 'first_name', 'last_name', 'active', 'roles')
 
     form_args = dict(
-        cb_username = dict(validators=[validators.required()]),
-        email = dict(validators=[validators.required()])
+        cb_username = dict(validators=[validators.InputRequired()]),
+        email = dict(validators=[validators.Email()])
     )
 
     # Automatically display human-readable names for the current and available Roles when creating or editing a User
@@ -76,7 +76,7 @@ class UserModelView(MyModelView):
 
         # Add a password field, naming it "password2" and labeling it "New Password".
         form_class.password = PasswordField('Change Password',
-                             [validators.optional(),
+                             [validators.Optional(),
                               validators.equal_to('confirm_password')])
         form_class.confirm_password = PasswordField()
         form_class.active = BooleanField(default=True)
@@ -149,9 +149,9 @@ class UserModelView(MyModelView):
 class CbModelView(MyModelView):
     column_exclude_list = ('saml_sp_config',)
     form_args = dict(
-        url=dict(label='Cb server URL', validators=[validators.required()]),
-        admin_key=dict(validators=[validators.required()]),
-        saml_sp_config=dict(validators=[validators.required()])
+        url=dict(label='Cb server URL', validators=[validators.URL()]),
+        admin_key=dict(validators=[validators.InputRequired()]),
+        saml_sp_config=dict(validators=[validators.InputRequired()])
     )
 
     def on_model_change(self, form, model, is_created):
