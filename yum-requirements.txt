@@ -1,3 +1,6 @@
 libffi-devel
 openssl-devel
 xmlsec1-devel
+git
+gcc
+python-devel
