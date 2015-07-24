@@ -13,3 +13,4 @@ qrcode
 flask-login
 flask-sqlalchemy
 -e git+https://github.com/mrjoes/flask-admin.git#egg=flask-admin
+importlib
