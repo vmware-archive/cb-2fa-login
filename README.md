@@ -3,6 +3,9 @@
 This implements just enough of a SAML Identity Provider (IdP) to provide authentication services for Carbon Black.
 This sample includes support for Duo Security 2FA.
 
+**NOTE that this code should NOT be run on your Carbon Black Response server directly! This code requires various prerequisites
+that may interfere with the operation of your Carbon Black Response server. Please install this on a fresh CentOS 7 box**
+
 ## Requirements
 
 Since this is a Proof-of-Concept, you have to piece this together a bit.
